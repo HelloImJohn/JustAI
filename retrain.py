@@ -4,6 +4,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 print("Tensorflow version " + tf.__version__)
 AUTO = tf.data.experimental.AUTOTUNE
+import os
 
 
 
@@ -15,15 +16,21 @@ try: # detect TPUs
   tf.tpu.experimental.initialize_tpu_system(tpu)
   strategy = tf.distribute.experimental.TPUStrategy(tpu)
 except ValueError: # detect GPUs
-  strategy = tf.distribute.MirroredStrategy() # for GPU or multi-GPU machines
-  #strategy = tf.distribute.get_strategy() # default strategy that works on CPU and single GPU
+  #strategy = tf.distribute.MirroredStrategy() # for GPU or multi-GPU machines
+  strategy = tf.distribute.get_strategy() # default strategy that works on CPU and single GPU
   #strategy = tf.distribute.experimental.MultiWorkerMirroredStrategy() # for clusters of multi-GPU machines
+
+
+  ##added
+  #tf.config.experimental.set_memory_growth(gpu, True)
+  gpus = tf.config.experimental.list_physical_devices('GPU')
+  tf.config.experimental.set_virtual_device_configuration(gpus[0], [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=6024)])
 
 print("Number of accelerators: ", strategy.num_replicas_in_sync)
 
 
 
-EPOCHS = 12
+EPOCHS = 1
 IMAGE_SIZE = [331, 331]
 
 FLOWERS_DATASETS = { # available image sizes
@@ -136,7 +143,7 @@ def display_9_images_from_dataset(dataset):
     title = CLASSES[np.argmax(labels[i], axis=-1)]
     subplot = display_one_flower(image, title, subplot)
     if i >= 8:
-      break;
+      break
               
   #plt.tight_layout() # bug in tight layout in this version of matplotlib
   plt.subplots_adjust(wspace=0.1, hspace=0.1)
@@ -149,7 +156,7 @@ def display_9_images_with_predictions(images, predictions, labels):
     title, correct = title_from_label_and_target(predictions[i], labels[i])
     subplot = display_one_flower(image, title, subplot, not correct)
     if i >= 8:
-      break;
+      break
               
   #plt.tight_layout() # bug in tight layout in this version of matplotlib
   plt.subplots_adjust(wspace=0.1, hspace=0.1)
@@ -335,9 +342,7 @@ print('[val_loss, val_acc]', evaluations)
 
 display_9_images_with_predictions(some_flowers, predictions, some_labels)
 
-model.save('model.h5')
-
-
+model.save('model.h5',' ')
 
 reload_model = tf.keras.models.load_model('model.h5')
 
