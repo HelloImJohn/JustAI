@@ -24,7 +24,7 @@ figure(figsize=(6, 4), dpi=100)
 #amount of light rays per slit..
 lps = 100
 #amount of slits..
-slits = 2
+slits = 20
 
 
 #(slits, light rays, length, dist, wave length)
@@ -35,7 +35,7 @@ def calc(s, lr, l, d, wl):
     for j in range(lr):
       m = l / 2
       print(j)
-      distCenter = abs(m - j + i * d * s)
+      distCenter = abs(m - j + i * d - s/2)
       #lIntens = 
       #y values..
            
