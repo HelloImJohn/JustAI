@@ -14,7 +14,7 @@ length = stop - start
 distGridBoard = 100 #cm
 #slitSize..
 b = 0.1 #cm
-#slit distance..
+#distance from one slit to another..
 d = 1 #cm
 #wave length..
 w = 550 #nm
@@ -27,31 +27,21 @@ lps = 100
 slits = 2
 
 
-#(slits, light rays, length, dist)
+#(slits, light rays, length, dist, wave length)
 def calc(s, lr, l, d, wl):
-  for i in range(s - 1):
+  for i in range(s):
+    y = np.arange(start, stop, length /lps)
+    x = np.arange(start, stop, length /lps) 
     for j in range(lr):
       m = l / 2
-      distCenter = abs(m - j + i * d)
+      print(j)
+      distCenter = abs(m - j + i * d * s)
       #lIntens = 
       #y values..
-      y = np.arange(start, stop, length /lps)
-      x = np.arange(start, stop, length /lps)   # start,stop,step..
-      y[(i+1)*j] = distCenter
+           
       #print(lIntens)
-
-      plt.plot(x,y)
+      y[j] = distCenter
+    plt.plot(x,y)
+  plt.show()
 
 calc(slits, lps, length, d, w)
-
-
-
-
-
-
-
-#y = np.sin(x)
-
-
-
-plt.show()
