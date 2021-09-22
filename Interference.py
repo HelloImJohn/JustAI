@@ -23,7 +23,7 @@ b = 0.1 #cm
 #distance from one slit to another..
 d = 1 #cm
 #wave length..
-w = 550 #nm
+w = 550 * (1 / np.power(10, 9)) #m to nm..
 
 figure(figsize=(6, 4), dpi=100)
 
@@ -37,7 +37,7 @@ def calc(s, lr, l, d, wl, dGB):
   #matr = np.linspace((1,2,4),(10,20,40),10)
   matr = np.linspace(np.zeros(lr),np.zeros(lr), s)
   for i in range(s):
-    y = np.arange(start, stop, length /lps)
+    #y = np.arange(start, stop, length /lps)
     x = np.arange(start, stop, length /lps) 
     for j in range(lr):
       m = l / 2
@@ -46,13 +46,20 @@ def calc(s, lr, l, d, wl, dGB):
       #lIntens = 
       #y values..
       #totalDistance (hypotinuse)
-      tD = np.sqrt(np.power(dGB, 2) + np.power(distCenter, 2))
-      
+      tD = np.sqrt(np.power(dGB, 2) + np.power(distCenter, 2))     
       #y[j] = distCenter      ## use this to plot the distance from the centerline..
-      y[j] = tD      ## use this to plot the distance from the centerline..
       matr[i][j] = tD
-    plt.plot(x,y)
-  plt.show()
-  print(matr)
+    #plt.plot(x,matr[i])
 
-calc(slits, lps, length, d, w, distGridBoard)
+  matrIntens = np.linspace(np.zeros(lr),np.zeros(lr), s)
+  for i in range(s - 1):
+    for j in range(lr):
+      matrIntens[i][j] = abs(matr[i][j] - matr[i + 1][j])
+    plt.plot(x,matrIntens[i])
+  plt.show()
+  #print(matrIntens)
+
+#calc(slits, lps, length, d, w, distGridBoard)
+
+#(((outputDiff / waveLength) % 1) - 0.5) * scale
+print((((250 / 500) % 1) - 0.5) * 2)
