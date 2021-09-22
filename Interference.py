@@ -32,18 +32,17 @@ lps = 100
 #amount of slits..
 slits = 20
 
-
 #(slits, light rays, length, dist, wave length, distance from grid board)
 def calc(s, lr, l, d, wl, dGB):
-  #matr = np.linspace((1,2,1),(10,20,2),10)
-  matr = np.linspace(s,l,1)
+  #matr = np.linspace((1,2,4),(10,20,40),10)
+  matr = np.linspace(np.zeros(lr),np.zeros(lr), s)
   for i in range(s):
     y = np.arange(start, stop, length /lps)
     x = np.arange(start, stop, length /lps) 
     for j in range(lr):
       m = l / 2
       #print(j)
-      distCenter = abs(m - j + i * d - s/2)
+      distCenter = abs(m - j + i * d - ((s/2) * d))
       #lIntens = 
       #y values..
       #totalDistance (hypotinuse)
@@ -51,6 +50,7 @@ def calc(s, lr, l, d, wl, dGB):
       
       #y[j] = distCenter      ## use this to plot the distance from the centerline..
       y[j] = tD      ## use this to plot the distance from the centerline..
+      matr[i][j] = tD
     plt.plot(x,y)
   plt.show()
   print(matr)
