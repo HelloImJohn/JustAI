@@ -30,14 +30,17 @@ figure(figsize=(6, 4), dpi=100)
 #amount of light rays per slit..
 lps = 100
 #amount of slits..
-slits = 20
+slits = 4
+#amount to scale the final output interference by..
+scale = 2
+
 
 #(slits, light rays, length, dist, wave length, distance from grid board)
 def calc(s, lr, l, d, wl, dGB):
   #matr = np.linspace((1,2,4),(10,20,40),10)
   matr = np.linspace(np.zeros(lr),np.zeros(lr), s)
   for i in range(s):
-    #y = np.arange(start, stop, length /lps)
+    y = np.zeros(lr)
     x = np.arange(start, stop, length /lps) 
     for j in range(lr):
       m = l / 2
@@ -53,13 +56,14 @@ def calc(s, lr, l, d, wl, dGB):
 
   matrIntens = np.linspace(np.zeros(lr),np.zeros(lr), s)
   for i in range(s - 1):
-    for j in range(lr):
-      matrIntens[i][j] = abs(matr[i][j] - matr[i + 1][j])
-    plt.plot(x,matrIntens[i])
+    for j in range(s - 1):
+      for k in range(lr):
+        y[j] += (((abs(matr[i][k] - matr[j + 1][k]) / wl) % 1) - 0.5) * scale
+    plt.plot(x,y)
   plt.show()
   #print(matrIntens)
 
-#calc(slits, lps, length, d, w, distGridBoard)
+calc(slits, lps, length, d, w, distGridBoard)
 
 #(((outputDiff / waveLength) % 1) - 0.5) * scale
 print((((250 / 500) % 1) - 0.5) * 2)
